@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CampusFlow</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <header>
+        <h1>CampusFlow</h1>
+        <p>Smart Campus Queue Management</p>
+    </header>
+
+    <main>
+
+        <section id="student-section">
+        <h2>Student Dashboard</h2>
+
+        <p>Join a queue for a campus service.</p>
+
+        <div class="form-group">
+            <label for="service">Select Service</label>
+            <select id="service">
+                <option value="">Choose a service</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="reason">Reason</label>
+            <input
+                type="text"
+                id="reason"
+                placeholder="Describe the issue or request"
+            >
+        </div>
+
+        <button id="join-queue-btn">Submit Request</button>
+
+        <div id="student-result">
+            <h3>Your Queue Details</h3>
+
+            <p>Token: <span id="token">-</span></p>
+            <p>Status: <span id="status">-</span></p>
+            <p>People Ahead: <span id="people-ahead">-</span></p>
+
+            <button id="cancel-request-btn">Cancel Request</button>
+        </div>
+    </section>
+
+        <section id="staff-section">
+        <h2>Staff Dashboard</h2>
+
+        <p>Manage requests and serve students.</p>
+
+        <div class="form-group">
+            <label for="staff-service">Select Service</label>
+            <select id="staff-service">
+                <option value="">Choose a service</option>
+            </select>
+        </div>
+
+        <button id="serve-next-btn">Serve Next</button>
+
+        <div id="current-request">
+            <h3>Currently Serving</h3>
+
+            <p>Token: <span id="staff-token">-</span></p>
+            <p>Reason: <span id="staff-reason">-</span></p>
+            <p>Priority: <span id="staff-priority">-</span></p>
+
+            <div class="form-group">
+                <label for="priority-select">Change Priority</label>
+                <select id="priority-select">
+                    <option value="Normal">Normal</option>
+                    <option value="High">High</option>
+                    <option value="Urgent">Urgent</option>
+                </select>
+            </div>
+
+            <button id="complete-btn">Complete Request</button>
+        </div>
+
+        <div id="queue-list">
+            <h3>Waiting Queue</h3>
+
+            <p>No requests currently displayed.</p>
+        </div>
+    </section>
+
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

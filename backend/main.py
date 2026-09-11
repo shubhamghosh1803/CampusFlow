@@ -42,7 +42,7 @@ class UpdateRequest(BaseModel):
 
 allowed_origins = [
     origin.strip()
-    for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000").split(",")
+    for origin in os.getenv("CORS_ORIGINS", "http://localhost:3000,,http://127.0.0.1:5500,http://localhost:5500").split(",")
     if origin.strip()
 ]
 
@@ -97,6 +97,7 @@ def get_queue(service_id: int):
         ROW_NUMBER() OVER (ORDER BY id) as position
         from queue_requests
         where service_id = %s
+            and status in ('Waiting', 'Serving')
         order by id
         """,
         (service_id,)
@@ -359,6 +360,39 @@ def update_request(request_id: int, request: UpdateRequest):
         raise HTTPException(status_code=404, detail="Request not found")
 
     connection.commit()
+    cursor.close()
+    connection.close()
+
+    return updated_request
+
+@app.patch("/requests/{request_id}/priority")
+def update_priority(request_id: int, priority: RequestPriority):
+    connection = get_db_connection()
+    cursor = connection.cursor(row_factory=dict_row)
+
+    cursor.execute(
+        """
+        UPDATE queue_requests
+        SET priority = %s
+        WHERE id = %s
+          AND status = 'Waiting'
+        RETURNING id, service_id, token, reason, status, priority, created_at
+        """,
+        (priority.value, request_id)
+    )
+
+    updated_request = cursor.fetchone()
+
+    if updated_request is None:
+        cursor.close()
+        connection.close()
+        raise HTTPException(
+            status_code=404,
+            detail="Waiting request not found"
+        )
+
+    connection.commit()
+
     cursor.close()
     connection.close()
 

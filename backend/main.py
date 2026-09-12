@@ -13,12 +13,17 @@ load_dotenv()
 app = FastAPI(title="CampusFlow API", version="0.1.0")
 
 def get_db_connection():
+    database_url = os.getenv("DATABASE_URL")
+
+    if database_url:
+        return psycopg.connect(database_url)
+
     return psycopg.connect(
-        host= os.getenv("DB_HOST"),
-        dbname= os.getenv("DB_NAME"),
-        user= os.getenv("DB_USER"),
-        password= os.getenv("DB_PASSWORD"),
-        port= os.getenv("DB_PORT")
+        host=os.getenv("DB_HOST"),
+        dbname=os.getenv("DB_NAME"),
+        user=os.getenv("DB_USER"),
+        password=os.getenv("DB_PASSWORD"),
+        port=os.getenv("DB_PORT")
     )
 
 class QueueRequest(BaseModel):

@@ -1,6 +1,6 @@
 console.log("CampusFlow JavaScript is working!");
 
-const API_URL = "http://127.0.0.1:8000";
+const API_URL = "https://campusflow-api-teua.onrender.com";
 
 async function loadServices() {
     const response = await fetch(`${API_URL}/services`);
